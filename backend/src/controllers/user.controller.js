@@ -1,9 +1,11 @@
+import cloudinary from "../lib/cloudinary.js";
 import User from "../models/user.model.js";
 
 // -------------- Get Friends controller -------------------
 export const getFriends = async (req, res) => {
   try {
     const loggedInUserId = req.user._id;
+    console.log(loggedInUserId);
 
     // Find the logged-in user and populate (expand) the 'friends' field
     const user = await User.findById(loggedInUserId).populate(
@@ -22,6 +24,7 @@ export const getFriends = async (req, res) => {
 export const updateProfile = async (req, res) => {
   try {
     const { profilePic } = req.body;
+
     const userId = req.user._id;
 
     if (!profilePic)
@@ -39,7 +42,7 @@ export const updateProfile = async (req, res) => {
 
     return res.status(200).json(updatedUser);
   } catch (err) {
-    console.log("Error in logout controller: " + err.message);
+    console.log("Error in updateProfile controller: " + err.message);
     return res.status(500).json({ message: "Internal Server Error" });
   }
 };
