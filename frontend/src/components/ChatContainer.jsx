@@ -3,15 +3,31 @@ import { useChatStore } from "../store/useChatStore";
 import { useAuthStore } from "../store/useAuthStore";
 
 const ChatContainer = () => {
-  const { getMessages, messages, selectedUser, sendMessage } = useChatStore();
+  const {
+    getMessages,
+    messages,
+    selectedUser,
+    sendMessage,
+    subscribeToMessages,
+    addMessage,
+  } = useChatStore();
+
+  const { onlineUsers, socket } = useAuthStore();
+
   const { authUser } = useAuthStore();
   const [message, setMessage] = useState("");
   const messageEndRef = useRef(null);
   const messagesContainerRef = useRef(null);
+
   useEffect(() => {
     if (selectedUser?._id) {
       getMessages(selectedUser._id);
+      subscribeToMessages(socket);
     }
+
+    return () => {
+      socket.off("newMessage");
+    };
   }, [selectedUser]);
 
   useEffect(() => {
@@ -31,23 +47,37 @@ const ChatContainer = () => {
 
     if (!message.trim()) return;
 
+    const newMessage = {
+      text: message,
+      receiverId: selectedUser._id,
+      senderId: authUser._id,
+      createdAt: new Date(),
+    };
+
+    addMessage(newMessage);
+
     await sendMessage({ receiverId: selectedUser._id, message });
+
     setMessage("");
   };
 
   if (!selectedUser) return null;
 
   return (
-    <div className="flex flex-col h-[40rem] bg-base-100/50 justify-between">
-      <div className="hidden sm:flex items-center gap-4 p-4 border-base-300 border-b-2">
+    <div className="flex flex-col h-[40rem] bg-base-100 justify-between">
+      <div className="hidden sm:flex items-center gap-4 p-4 border-base-300 border-y-2">
         <img
           src={selectedUser.profilePic || "/avatar.png"}
           alt={selectedUser.fullName}
           className="w-10 h-10 rounded-full object-cover"
         />
         <div>
-          <p className="font-semibold text-sm">{selectedUser.fullName}</p>
-          <p className="text-xs text-gray-500">Online</p>
+          <p className="font-semibold ">{selectedUser.fullName}</p>
+          {onlineUsers.includes(selectedUser._id) ? (
+            <p className="text-xs text-gray-500">Online</p>
+          ) : (
+            <p className="text-xs text-gray-500">Offline</p>
+          )}
         </div>
       </div>
 
@@ -100,7 +130,6 @@ const ChatContainer = () => {
         style={{
           position: "sticky",
           bottom: 0,
-
           zIndex: 10,
         }}
       >
