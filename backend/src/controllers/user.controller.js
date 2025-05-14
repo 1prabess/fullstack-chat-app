@@ -5,7 +5,6 @@ import User from "../models/user.model.js";
 export const getFriends = async (req, res) => {
   try {
     const loggedInUserId = req.user._id;
-    console.log(loggedInUserId);
 
     // Find the logged-in user and populate (expand) the 'friends' field
     const user = await User.findById(loggedInUserId).populate(
