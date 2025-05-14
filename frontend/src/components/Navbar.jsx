@@ -6,7 +6,7 @@ const Navbar = () => {
   const { logout, authUser } = useAuthStore();
 
   return (
-    <header className=" border-b border-b-neutral  w-full ">
+    <header className=" border-b border-b-base-300 shadow  w-full ">
       <div className="max-w-[80rem] mx-auto px-4 h-16">
         <div className="flex items-center justify-between h-full">
           <div className="flex items-center gap-8">
@@ -17,7 +17,7 @@ const Navbar = () => {
               <div className="size-9 rounded-lg bg-primary/10 flex items-center justify-center">
                 <MessagesSquare className="w-5 h-5 text-primary" />
               </div>
-              <h1 className="text-lg font-bold">Chatify</h1>
+              <h1 className="text-lg font-bold">usChat </h1>
             </Link>
           </div>
 
@@ -30,7 +30,7 @@ const Navbar = () => {
               `}
             >
               <Settings className="w-4 h-4" />
-              <span className="hidden sm:inline">Settings</span>
+              <span className="hidden sm:inline">Themes</span>
             </Link>
 
             {authUser && (
