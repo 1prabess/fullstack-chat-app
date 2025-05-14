@@ -1,8 +1,9 @@
 import { create } from "zustand";
 import { axiosInstance } from "../lib/axios";
 import toast from "react-hot-toast";
+import { useAuthStore } from "./useAuthStore";
 
-export const useChatStore = create((set) => ({
+export const useChatStore = create((set, get) => ({
   messages: [],
   friends: [],
   selectedUser: null,
@@ -28,7 +29,7 @@ export const useChatStore = create((set) => ({
   addFriend: async (userToAddId) => {
     try {
       await axiosInstance.post(`/user/addFriend/${userToAddId}`);
-      toast.success("Friend added succesfully!");
+      toast.success("Friend added successfully!");
       const res = await axiosInstance.get("/user/friends");
       set({ friends: res.data });
     } catch (err) {
@@ -40,7 +41,6 @@ export const useChatStore = create((set) => ({
     set({ isMessagesLoading: true });
     try {
       const res = await axiosInstance.get(`/message/${userToChatId}`);
-
       set({ messages: res.data });
     } catch (err) {
       console.log(
@@ -57,13 +57,38 @@ export const useChatStore = create((set) => ({
     set({ selectedUser });
   },
 
+  subscribeToMessages: (socket) => {
+    const { selectedUser } = get();
+    if (!selectedUser) return;
+
+    socket.off("newMessage");
+
+    socket.on("newMessage", (newMessage) => {
+      const { selectedUser: currentSelectedUser } = get();
+
+      if (
+        newMessage.senderId === currentSelectedUser?._id ||
+        newMessage.receiverId === currentSelectedUser?._id
+      ) {
+        set((state) => ({
+          messages: [...state.messages, newMessage],
+        }));
+      }
+    });
+  },
+
+  addMessage: (newMessage) => {
+    set((state) => ({
+      messages: [...state.messages, newMessage],
+    }));
+  },
+
   sendMessage: async ({ receiverId, message }) => {
     try {
-      console.log(message);
       await axiosInstance.post(`/message/send/${receiverId}`, {
         text: message,
       });
-      toast.success("Message sent succesfully!");
+      toast.success("Message sent successfully!");
     } catch (err) {
       toast.error("Couldn't send message.");
     }
