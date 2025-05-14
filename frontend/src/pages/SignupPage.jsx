@@ -125,7 +125,7 @@ export const SignupPage = () => {
 
           <button
             type="submit"
-            className="btn btn-primary rounded-none w-full"
+            className="btn btn-primary shadow-none rounded-none w-full"
             disabled={isSigningUp}
           >
             {isSigningUp ? (
