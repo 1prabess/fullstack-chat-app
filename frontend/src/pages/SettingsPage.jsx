@@ -8,7 +8,7 @@ function SettingsPage() {
     <div className="min-h-fit h-screen pb-10 container mx-auto px-4 mt-10 ">
       <div>
         <h1 className="text-xl mb-4">Choose a theme</h1>
-        <div className="grid grid-cols-2 sm:grid-cols-8 gap-4 justify-center items-center">
+        <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-8 gap-4 justify-center items-center">
           {THEMES.map((theme) => (
             <div
               data-theme={theme}
