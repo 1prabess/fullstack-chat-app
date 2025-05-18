@@ -16,11 +16,6 @@ export const useChatStore = create((set, get) => ({
       const res = await axiosInstance.get("/user/friends");
       set({ friends: res.data });
     } catch (err) {
-      console.log(
-        "Error in getFriends (frontend): ",
-        err.response.data.message
-      );
-      toast.error(err.response.data.message);
     } finally {
       set({ isFriendsLoading: false });
     }
@@ -88,7 +83,6 @@ export const useChatStore = create((set, get) => ({
       await axiosInstance.post(`/message/send/${receiverId}`, {
         text: message,
       });
-      toast.success("Message sent successfully!");
     } catch (err) {
       toast.error("Couldn't send message.");
     }
