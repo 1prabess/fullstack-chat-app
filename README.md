@@ -29,7 +29,7 @@ Create a `.env` file in the `backend` directory with the following variables:
 
 ```env
 MONGODB_URI=your_mongodb_connection_string
-PORT=5000
+PORT=5002
 NODE_ENV=development
 JWT_SECRET=your_jwt_secret_key
 
@@ -39,7 +39,7 @@ CLOUDINARY_API_SECRET=your_cloudinary_api_secret
 
 
 * `MONGODB_URI` — MongoDB connection string.
-* `PORT` — Backend server port (default: 5000).
+* `PORT` — Backend server port (default: 5002).
 * `NODE_ENV` — Environment mode (`development` or `production`).
 * `JWT_SECRET` — Secret key for JWT token signing.
 * `CLOUDINARY_*` — Credentials for Cloudinary image hosting.
