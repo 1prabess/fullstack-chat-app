@@ -4,9 +4,12 @@ import { useChatStore } from "../store/useChatStore";
 import Sidebar from "../components/Sidebar";
 import ChatContainer from "../components/ChatContainer";
 import NoChatSelected from "../components/NoChatSelected";
+import { Users } from "lucide-react";
+import { useAuthStore } from "../store/useAuthStore";
 
 const HomePage = () => {
-  const { selectedUser, addFriend } = useChatStore();
+  const { selectedUser, addFriend, friends } = useChatStore();
+  const { onlineUsers } = useAuthStore();
   const [userIdToAdd, setUserIdToAdd] = useState("");
 
   async function handleAddFriend() {
@@ -18,22 +21,37 @@ const HomePage = () => {
 
   return (
     <div className="min-h-screen   px-2 md:px-6 py-4">
-      <div className="max-w-[80rem] mx-auto flex flex-col gap-4 h-full">
-        {/* Add Friend Input */}
-        <div className="flex   gap-2 items-stretch sm:items-center">
-          <input
-            type="text"
-            placeholder="Enter User ID"
-            className="input input-bordered w-full  sm:max-w-xs rounded-md"
-            value={userIdToAdd}
-            onChange={(e) => setUserIdToAdd(e.target.value)}
-          />
-          <button
-            className="btn btn-primary bg-primary shadow-none w-fit sm:w-auto"
-            onClick={handleAddFriend}
-          >
-            Add Friend
-          </button>
+      <div className="max-w-[80rem] mx-auto flex flex-col  gap-4 h-full">
+        <div className="flex flex-col sm:flex-row sm:justify-between">
+          <div className="md:flex  p-2  items-center gap-2">
+            {/* <Users className="size-5" /> */}
+            <span>
+              {
+                friends.filter((friend) => onlineUsers.includes(friend._id))
+                  .length
+              }{" "}
+              {friends.filter((friend) => onlineUsers.includes(friend._id))
+                .length === 1
+                ? "friend online"
+                : "friends online"}
+            </span>
+          </div>
+          {/* Add Friend Input */}
+          <div className="flex   gap-2 items-stretch sm:items-center">
+            <input
+              type="text"
+              placeholder="Enter User ID"
+              className="input input-bordered w-full  sm:max-w-xs rounded-md"
+              value={userIdToAdd}
+              onChange={(e) => setUserIdToAdd(e.target.value)}
+            />
+            <button
+              className="btn btn-primary bg-primary shadow-none w-fit sm:w-auto"
+              onClick={handleAddFriend}
+            >
+              Add Friend
+            </button>
+          </div>
         </div>
 
         {/* Chat Layout */}
