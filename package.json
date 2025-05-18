@@ -1,0 +1,11 @@
+{
+  "name": "fullstack-chat-app",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "dev": "npm install && npm install --prefix backend && npm install --prefix frontend && concurrently \"npm run dev --prefix backend\" \"npm run dev --prefix frontend\""
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
