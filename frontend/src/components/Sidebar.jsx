@@ -24,7 +24,7 @@ const Sidebar = () => {
 
   return (
     <div className=" flex overflow-x-auto px-2 py-2 h-fit  md:flex-col md:overflow-visible sm:gap-2 ">
-      <div className="md:flex hidden p-2 text-center items-center gap-2">
+      {/* <div className="md:flex hidden p-2 text-center items-center gap-2">
         <Users className="size-5" />
         <span className="hidden md:block">
           {friends.filter((friend) => onlineUsers.includes(friend._id)).length}{" "}
@@ -33,7 +33,7 @@ const Sidebar = () => {
             ? "friend online"
             : "friends online"}
         </span>
-      </div>
+      </div> */}
       {friends.map((friend) => (
         <div
           key={friend._id}
